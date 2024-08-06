@@ -3,14 +3,25 @@ import streamlit as st
 import numpy as np
 from PIL import Image
 
-# 이미지 파일 경로 리스트
-image_paths = ["Back.png", "DSUB.png", "Front.png", "RJ45.png"]
-
-# 메인 화면을 크게 보이게 하기 위해 사이드바의 여백을 최소화
+# 페이지 레이아웃 설정
 st.set_page_config(layout="wide")
 
-# 사이드바를 통해 이미지 선택
-selected_image = st.sidebar.selectbox("Select an image", image_paths)
+# 사이드바 설정
+st.sidebar.title("Image Processing Parameters")
+selected_option = st.sidebar.selectbox("Select an option", ["Select a sample image", "Upload your own image"])
+
+# 파일 업로드
+if selected_option == "Upload your own image":
+    uploaded_file = st.sidebar.file_uploader("Choose an image...", type=["png", "jpg", "jpeg"])
+    if uploaded_file is not None:
+        image = Image.open(uploaded_file)
+        image = np.array(image)
+    else:
+        st.warning("Please upload an image.")
+        st.stop()
+else:
+    selected_image = st.sidebar.selectbox("Select a sample image", ["Back.png", "DSUB.png", "Front.png", "RJ45.png"])
+    image = cv2.imread(selected_image)
 
 # Canny Edge Detection 파라미터
 st.sidebar.subheader("Canny Edge Detection Parameters")
@@ -22,8 +33,18 @@ st.sidebar.subheader("Adaptive Threshold Parameters")
 block_size = st.sidebar.slider("Block Size", 1, 10, 5, key='block_size')
 constant = st.sidebar.slider("Constant", 0, 20, 5, key='constant')
 
-# 이미지 읽기 및 처리
-image = cv2.imread(selected_image)
+# 설명 텍스트
+st.sidebar.markdown("""
+**Low Threshold**: Lower bound for the hysteresis procedure in Canny edge detection.
+
+**High Threshold**: Upper bound for the hysteresis procedure in Canny edge detection.
+
+**Block Size**: Size of the pixel neighborhood used in adaptive thresholding.
+
+**Constant**: Constant subtracted from the mean or weighted mean in adaptive thresholding.
+""")
+
+# 이미지 처리
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 gray_blur = cv2.GaussianBlur(gray, (5, 5), 0)
 
