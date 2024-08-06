@@ -8,10 +8,16 @@ image_paths = ["Back.png", "DSUB.png", "Front.png", "RJ45.png"]
 
 # 사이드바를 통해 이미지 선택
 selected_image = st.sidebar.selectbox("Select an image", image_paths)
-low_threshold = st.sidebar.slider("Low Threshold", 0, 500, 100)
-high_threshold = st.sidebar.slider("High Threshold", 0, 500, 200)
-block_size = st.sidebar.slider("Block Size", 1, 10, 5)
-constant = st.sidebar.slider("Constant", 0, 20, 5)
+
+# Canny Edge Detection 파라미터
+st.sidebar.subheader("Canny Edge Detection Parameters")
+low_threshold = st.sidebar.slider("Low Threshold", 0, 500, 100, key='low_threshold')
+high_threshold = st.sidebar.slider("High Threshold", 0, 500, 200, key='high_threshold')
+
+# Adaptive Threshold 파라미터
+st.sidebar.subheader("Adaptive Threshold Parameters")
+block_size = st.sidebar.slider("Block Size", 1, 10, 5, key='block_size')
+constant = st.sidebar.slider("Constant", 0, 20, 5, key='constant')
 
 # 이미지 읽기 및 처리
 image = cv2.imread(selected_image)
