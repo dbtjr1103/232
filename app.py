@@ -6,6 +6,9 @@ from PIL import Image
 # 이미지 파일 경로 리스트
 image_paths = ["Back.png", "DSUB.png", "Front.png", "RJ45.png"]
 
+# 메인 화면을 크게 보이게 하기 위해 사이드바의 여백을 최소화
+st.set_page_config(layout="wide")
+
 # 사이드바를 통해 이미지 선택
 selected_image = st.sidebar.selectbox("Select an image", image_paths)
 
@@ -32,7 +35,9 @@ block_size = block_size * 2 + 3  # 블록 크기는 홀수여야 하므로 변�
 adaptive_thresh = cv2.adaptiveThreshold(gray_blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, block_size, constant - 10)
 
 # 결과 출력
-col1, col2, col3 = st.columns(3)
+st.write("# Image Processing Results")
+
+col1, col2, col3 = st.columns([1, 1, 1])
 
 with col1:
     st.image(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), caption='Original Image', use_column_width=True)
