@@ -26,6 +26,11 @@ block_size = block_size * 2 + 3  # 블록 크기는 홀수여야 하므로 변�
 adaptive_thresh = cv2.adaptiveThreshold(gray_blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, block_size, constant - 10)
 
 # 결과 출력
-st.image(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), caption='Original Image', use_column_width=True)
-st.image(edges, caption='Canny Edge Detection', use_column_width=True, channels='GRAY')
-st.image(adaptive_thresh, caption='Adaptive Threshold', use_column_width=True, channels='GRAY')
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.image(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), caption='Original Image', use_column_width=True)
+with col2:
+    st.image(edges, caption='Canny Edge Detection', use_column_width=True, channels='GRAY')
+with col3:
+    st.image(adaptive_thresh, caption='Adaptive Threshold', use_column_width=True, channels='GRAY')
